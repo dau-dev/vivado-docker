@@ -19,13 +19,13 @@ jobs:
   
     - name: Update Vivado image cache if cache miss
       if: steps.cache-docker-vivado.outputs.cache-hit != 'true'
-      run: docker pull timkpaine/vivtest:latest && mkdir -p ci/cache/docker/vivado && docker image save timkpaine/vivtest:latest --output ./ci/cache/docker/vivado/vivado-latest.tar
+      run: docker pull timkpaine/vivado:latest && mkdir -p ci/cache/docker/vivado && docker image save timkpaine/vivado:latest --output ./ci/cache/docker/vivado/vivado-latest.tar
     
     - name: Use Vivado image cache if cache hit
       if: steps.cache-docker-vivado.outputs.cache-hit == 'true'
       run: docker image load --input ./ci/cache/docker/vivado/vivado-latest.tar
     
     - name: Run Vivado synthesis
-      run: docker run -v `pwd`:/mnt/src timkpaine/vivtest bash -lc "pushd /mnt/src && LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so.1 vivado -mode batch -source scripts/build.tcl
+      run: docker run -v `pwd`:/mnt/src timkpaine/vivado bash -lc "pushd /mnt/src && LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so.1 vivado -mode batch -source scripts/build.tcl
 ```
 
